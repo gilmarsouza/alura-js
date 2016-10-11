@@ -1,39 +1,37 @@
+//calcula-imc.js
+
 var botao = document.getElementById("calcula-imcs");
+botao.addEventListener("click", function() {
 
-botao.addEventListener("click", function(){
-    var trsPacientes = document.getElementsByClassName("paciente");
+	var trsPacientes = document.getElementsByClassName("paciente");
 
-    percorreArray(trsPacientes, imprimeEModificaTdDeImc);
+	precorreArray(trsPacientes, function (pacienteTr){
 
-    function imprimeEModificaTdDeImc(pacienteTr){
-        var pacienteAtual = montaPaciente(pacienteTr);
-        var imc = pacienteAtual.pegaImc();
+	    var tdNome = pacienteTr.getElementsByClassName("info-nome")[0]; 
+	    var tdPeso = pacienteTr.getElementsByClassName("info-peso")[0]; 
+	    var tdAltura = pacienteTr.getElementsByClassName("info-altura")[0];
 
-        var tdImc = pacienteTr.getElementsByClassName("info-imc")[0];
-        tdImc.textContent = imc;
+	    var pacienteAtual = { 
+	        nome : tdNome.textContent, 
+	        peso : tdPeso.textContent, 
+	        altura : tdAltura.textContent,
+	        pegaImc: function() {
 
-        console.log(imc);
-    } 
-    
-    function montaPaciente(pacienteTr){
-        var tdNome = pacienteTr.getElementsByClassName("info-nome")[0];
-        var tdPeso = pacienteTr.getElementsByClassName("info-peso")[0];
-        var tdAltura = pacienteTr.getElementsByClassName("info-altura")[0];
+	            if(this.altura != 0){
+	                var imc = this.peso / (this.altura * this.altura);
+	                return imc;
+	            } else{
 
-        var paciente = { 
-            nome: tdNome.textContent, 
-            peso: tdPeso.textContent, 
-            altura: tdAltura.textContent,
-            pegaImc: function (){
-                if (this.altura != 0) {
-                    var imc = this.peso / (this.altura * this.altura);
-                    return imc;
-                } else {
-                    console.log("Não posso executar uma divisão por 0!")
-                }
-            }
-        };
+	                console("Não posso dividir por zero!");
+	            }
+	        }
+	    };    
 
-        return paciente;
-    }  
+	    var imc = pacienteAtual.pegaImc();
+
+	    var tdImc = pacienteTr.getElementsByClassName("info-imc")[0]; 
+	    tdImc.textContent = imc;
+
+	    console.log(imc);
+	}); 
 });
